@@ -1,0 +1,48 @@
+@charset "ISO-8859-1";
+#myNavbar li a{
+	color: blue;
+	font-size:1.1em;
+}
+
+#myNavbar li a:hover{
+	color: #FFB300;
+	border-top:2px solid #FFB300;
+	background-color:white;
+}
+
+#menu_header{
+	margin-left: 240px;
+	color:#ccc;
+}
+
+#logrow{
+	margin-left: 350px;
+}
+
+#logh2{
+	margin-left: 60px;
+}
+#logp{
+	margin-left: 25px;
+}
+#submit{
+	margin-left: 33px;
+}
+#error_message{
+	margin-left: 28px;
+}
+#loginput{
+	margin-left: 40px;
+}
+#footerp{
+	margin-left: 337px;
+}
+#footer{
+	margin-top: 10px;
+}
+#register{
+	margin-left: 270px;
+}
+#h2reg{
+	margin-left: 60px;
+}

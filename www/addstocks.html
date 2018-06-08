@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Order Place</title>
+<!-- Latest compiled and CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/order.css">
+<link rel="stylesheet" href="css/common.css">
+
+</head>
+
+<body>
+<div id="result"></div>
+
+<div class="container">
+<!--Start of container -->
+
+    <div class="container-fluid" style="height:100px;" id="social_header">
+			<!-- START OF HEADER-->
+			<div class="container">
+				<div class="col-md-12">
+					<h3 id="title">Add Stocks<h3>
+				</div>
+			</div>
+			<!-- END OF HEADER-->
+	</div>
+
+<div class="row" id="logrow">
+        <div class="col-md-4">
+             <div class="well">
+                  <h4 id="symbol_name"></h4>
+                  <hr>
+				<form id="order_place"> 
+					<select name ="type" id="type" class="form-control">
+                        <option value="aapl">AAPL</option>
+                        <option value="amzn">AMZN</option>
+					    <option value="ba">BA</option>
+                        <option value="bac">BAC</option>
+					    <option value="box">BOX</option>
+                        <option value="c">C</option>
+					    <option value="chk">CHK</option>
+                        <option value="cl">CL</option>
+					    <option value="dis">DIS</option>
+                    </select>
+					<br>
+					<input type="text" name="quantity" id="quantity" placeholder="Quantity" class="form-control"/>
+					<br>
+					<input type="text" name="price" id="price" placeholder="Price" class="form-control"/>
+					<br>
+					<input type="button" name="submit" id="submit" value="Submit" class="btn btn-success"/>
+					<input type="reset" value="Reset" class="btn btn-default"/>
+				</form>
+             </div>
+         </div>
+    </div>
+    <div class="well well-lg" id="footer"> 
+	<p id="footerp"> Copyright (c) 2018 @USTOCKTRADE </p>
+    </div>
+<!-- End of container -->
+</div>
+
+<script>
+$(document).ready(function() {
+
+
+  $("#submit").click(function() {
+     
+	// collect the symbol parameter
+	var url_string = window.location.href;
+    var url = new URL(url_string);
+    var nic = url.searchParams.get("nic");
+	console.log(nic);
+	
+	var price = $('#price').val();
+	var size = $('#quantity').val();
+	var e = document.getElementById("type");
+    var symbol = e.options[e.selectedIndex].value;
+	
+	
+		$.ajax({
+        method: "POST",
+        url: "api/com.ust.main.AdminService/addStocks?",
+        data: {symbol:symbol,user:nic,price:price,size:size},
+        success: function(data) {
+		    
+			if(data === "success") {
+			    location.href = "http://localhost:8000/viewuser.html";
+				alert("Stocks has added");
+			}
+			else if(data == "fail"){
+			    $("form").trigger("reset");
+				location.href = "http://localhost:8000/viewuser.html";
+				alert("User already have this stocks");
+			}
+       }
+    })
+
+	
+    
+  })
+})
+</script>
+
+<script>
+
+$(document).ready(function() {
+var url_string = window.location.href;
+var url = new URL(url_string);
+//var symbol = url.searchParams.get("symbol");
+document.getElementById("symbol_name").innerHTML = url.searchParams.get("symbol");
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+
+#add_funds_btn{
+  margin-left: 15px;
+  padding: 20px 52px;
+}
+
+#withdraw_funds_btn{
+  margin-left: 15px;
+  padding: 20px 35px;
+}
+
+#portfolio_btn{
+  margin-left: 15px;
+  padding: 20px 60px;
+}
+
+#orders_btn{
+  margin-left: 15px;
+  padding: 20px 65px;
+}
+
+#profile_h3{
+  margin-left: 350px;
+  padding: 20px 52px;
+}

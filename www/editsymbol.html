@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Order Place</title>
+<!-- Latest compiled and CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/order.css">
+<link rel="stylesheet" href="css/common.css">
+
+</head>
+
+<body>
+<div id="result"></div>
+
+<div class="container">
+<!--Start of container -->
+
+    <div class="container-fluid" style="height:100px;" id="social_header">
+			<!-- START OF HEADER-->
+			<div class="container">
+				<div class="col-md-12">
+					<h3 id="order_h3">Edit Symbol<h3>
+				</div>
+			</div>
+			<!-- END OF HEADER-->
+	</div>
+
+<div class="row" id="logrow">
+        <div class="col-md-4">
+             <div class="well">
+                  <h4 id="symbol_name"></h4>
+                  <hr>
+				<form id="order_place"> 
+					<input type="text" name="name" id="name" placeholder="Name" class="form-control"/>
+					<br>
+					<input type="text" name="description" id="description" placeholder="Description" class="form-control input-lg"/>
+					<br>
+					<input type="button" name="submit" id="submit" value="Submit" class="btn btn-success"/>
+					<input type="reset" value="Reset" class="btn btn-default"/>
+					<br>
+				</form>
+             </div>
+         </div>
+    </div>
+    <div class="well well-lg" id="footer"> 
+	<p id="footerp"> Copyright (c) 2018 @USTOCKTRADE </p>
+    </div>
+<!-- End of container -->
+</div>
+
+<script>
+
+$(document).ready(function() {
+var url_string = window.location.href;
+var url = new URL(url_string);
+//var symbol = url.searchParams.get("symbol");
+document.getElementById("symbol_name").innerHTML = url.searchParams.get("symbol");
+
+});
+
+</script>
+
+<script>
+$(document).ready(function() {
+
+  $("#submit").click(function() {
+     
+	// collect the symbol parameter
+	var url_string = window.location.href;
+    var url = new URL(url_string);
+    var symbol = url.searchParams.get("symbol");
+  
+	//var user = $('#user').val();
+	var name = $('#name').val();
+	var description = $('#description').val();
+	
+		$.ajax({
+        method: "POST",
+        url: "api/com.ust.main.AdminService/editSymbol?",
+        data: {id:symbol,name:name,description:description},
+        success: function(data) {
+		    
+			if(data === "success") {
+			    location.href = "http://localhost:8000/viewsymbol.html";
+				alert("Symbol has edited");
+			}
+			else if(data == "fail"){
+			    $("form").trigger("reset");
+				location.href = "http://localhost:8000/editsymbol.html";
+                //$('#success_message').fadeIn().html("Order Placed Fail");
+				alert("Fields are empty");
+			}
+			else if(data == "update fail"){
+				location.href = "http://localhost:8000/viewsymbol.html";
+                //$('#success_message').fadeIn().html("Order Placed Fail");
+				alert("You couldnt edit this symbol");
+			}
+			
+       }
+    })
+
+	
+    
+  })
+})
+</script>
+
+
+</body>
+</html>

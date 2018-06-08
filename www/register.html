@@ -1,0 +1,145 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Registration Page</title>
+<!-- Latest compiled and CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<script>
+    function redirect(){
+	    return true;
+	}
+</script>
+</head>
+<body>
+
+<div class="container">
+<!-- Start of a Container -->
+
+   <div class="container"  id="menu_header">
+			<!-- START OF MENU HEADER-->
+			<div class="col-md-12">
+				<nav class="navbar">
+				  <div class="container-fluid">
+					<div class="navbar-header">
+					  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span> 
+					  </button> 
+					</div>
+					<div class="collapse navbar-collapse" id="myNavbar">
+					  <ul class="nav navbar-nav">
+						<li class="active"><a href="#">HOME</a></li>
+						<li><a href="#">FEATURES</a></li>
+						<li><a href="#">ABOUT US</a></li> 
+						<li><a href="#">BLOG</a></li> 
+					  </ul>
+					</div>
+				  </div>
+				</nav>
+			</div>
+			<!-- END OF MENU HEADER-->
+   </div>
+ 
+    <div class="row" id="register">
+        
+         <div class="col-md-6">
+             <div class="well">
+                  <h2 id="h2reg">Registration Form</h2>
+				<hr/>
+				<form id="register_form"> 
+					<label> Name : </label>
+					<input type="text" name="name" id="name" class="form-control"/>
+					<label> NIC : </label>
+					<input type="text" name="nic" id="nic" class="form-control"/>
+					<label> Email : </label>
+					<input type="text" name="email" id="email" class="form-control"/>
+					<label> Password : </label>
+					<input type="password" name="password" id="password" class="form-control"/>
+					<label> Confirmation : </label>
+					<input type="password" name="confirm" id="confirm" class="form-control"/>
+					</br>
+					<input type="button" value="Submit" id="submit" class="btn btn-success"/>
+					<input type="reset" value="Reset" class="btn btn-default"/>
+					<br>
+					<br>
+					<span id="error_message" class="text-danger"></span>
+				</form>
+             </div>
+         </div>
+    </div>
+    <div class="well well-lg" id="footer"> 
+	<p id="footerp"> Copyright (c) 2018 @USTOCKTRADE </p>
+    </div>
+<!-- End of a Container -->
+</div>
+
+<script>
+$(document).ready(function() {
+  $("#submit").click(function() {
+  
+    var name = $('#name').val();
+	var nic = $('#nic').val();
+	var email = $('#email').val();
+	var password = $('#password').val();
+	var confirm = $('#confirm').val();
+	var status = "active";
+	
+	if(email == '' || password == '' || name == '' || nic == '' || confirm == '')
+	{
+	    $('#error_message').html("All fields are required");	
+	}
+	else if(password !== confirm ){
+	    $("form").trigger("reset");
+	    $('#error_message').html("Password Confirmation Fail");
+	}
+	else{
+	    $('#error_message').html('');
+		$.ajax({
+        method: "POST",
+        url: "api/com.ust.main.UserService/userRegistration?",
+        data: {name:name,nic:nic,email:email,password:password,status:status},
+        success: function(data) {
+		    
+			if(JSON.parse(data).response === "User_Registered"){
+			    location.href = "http://localhost:8000/index.html";
+			}
+			
+			else if(JSON.parse(data).response === "User_Exist"){
+			    $("form").trigger("reset");
+                $('#error_message').fadeIn().html("User Exist");
+			}
+			
+			else if(JSON.parse(data).response === "Invalid_Email"){
+			    $("form").trigger("reset");
+                $('#error_message').fadeIn().html("Invalid Email");
+			}
+			
+			else if(JSON.parse(data).response === "Invalid_Password"){
+			    $("form").trigger("reset");
+                $('#error_message').fadeIn().html("Invalid_Password");
+			}
+			
+			else{
+			    $("form").trigger("reset");
+                $('#error_message').fadeIn().html("Registration Failed");
+			}
+			
+       }
+    })
+
+	}
+    
+  })
+})
+</script>
+
+</body>
+</html>

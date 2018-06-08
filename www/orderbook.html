@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Symbol</title>
+<!-- Latest compiled and CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="container-fluid" style="height:100px;" id="social_header">
+			<!-- START OF SOCIAL HEADER-->
+			<div class="container">
+				<div class="col-md-10">
+					<h3 id="title">Admin Panel<h3>
+				</div>
+				<div class="col-md-2">
+					<a href='dashboard.html' class='btn btn-default' id="dashboard">DashBoard</a>
+				</div>
+			</div>
+			<!-- END OF SOCIAL HEADER-->
+	</div>
+	
+	
+	<div class="row" id="logrow">
+	  <div class="col-md-4">
+	    <div class="well well-lg"> 
+	        <form id="symbol">
+			    <select name ="type" id="type" class="form-control">
+                    <option value="aapl">AAPL</option>
+                    <option value="amzn">AMZN</option>
+					<option value="ba">BA</option>
+                    <option value="bac">BAC</option>
+					<option value="box">BOX</option>
+                    <option value="c">C</option>
+					<option value="chk">CHK</option>
+                    <option value="cl">CL</option>
+					<option value="dis">DIS</option>
+                </select>
+				<br>
+				<input type="button" name="view" id="view" value="View" class="btn btn-success"/>
+            </form>			
+	    </div>
+	  </div>
+	
+	</div>
+	
+	
+	<div class="row">
+	    <div class="col-md-6">
+	        <div class="well well-lg">
+		        <table class="table table-bordered" id="bidTable">
+				<h3>Buy<h3>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+					<tbody id="bidBody">
+					</tbody>
+                </table>
+		    </div>
+		</div>
+		<div class="col-md-6">
+	        <div class="well well-lg">
+		        <table class="table table-bordered" id="askTable">
+				<h3>Sell<h3>
+                    <thead>
+                        <tr>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>ID</th>
+                        </tr>
+                    </thead>
+					<tbody id="askBody">
+					</tbody>
+                </table>
+		    </div>
+		</div>
+
+
+</div>
+<script>
+    function buy(symbol){$.ajax({
+        method: "POST",
+		data: {name:symbol},
+        url: "http://localhost:8000/api/com.ust.main.Main/orderbookBuy?",
+        success: function(data1) {
+		   var data = $.parseJSON(data1).myArrayList;
+		   $("#bidTable").innerHTML = "";
+			if(data){
+                var len = data.length;
+                var txt = "";
+                if(len > 0){
+                    for(var i=0;i<len;i++){
+                        txt += "<tr><td>"+data[i].map.id+"</td><td>"+data[i].map.volume+"</td><td>"+data[i].map.price+"</td></tr>";
+                       
+                    }
+                    if(txt != ""){
+                        $("#bidBody").append(txt);
+                    }
+                }
+            }
+        }
+				
+       })};
+ 
+    function sell(symbol){$.ajax({
+        method: "POST",
+		data: {name:symbol},
+        url: "http://localhost:8000/api/com.ust.main.Main/orderbookSell?",
+        success: function(data1) {
+		   var data = $.parseJSON(data1).myArrayList;
+		   $("#askTable").innerHTML = "";
+			if(data){
+                var len = data.length;
+                var txt = "";
+                if(len > 0){
+                    for(var i=0;i<len;i++){
+                        txt += "<tr><td>"+data[i].map.price+"</td><td>"+data[i].map.volume+"</td><td>"+data[i].map.id+"</td></tr>"; 
+                    }
+                    if(txt != ""){
+                        $("#askBody").append(txt);
+                    }
+                }
+            }
+        }
+			
+			
+			
+       })};
+ 
+
+$(document).ready(function(){
+    $("#view").click(function(){
+	    var e = document.getElementById("type");
+        var symbol = e.options[e.selectedIndex].value;
+		console.log();
+		document.getElementById("bidBody").innerHTML = "";
+		document.getElementById("askBody").innerHTML = "";
+		buy(symbol);
+		sell(symbol);
+		
+	})
+});
+
+</script>
+
+
+
+</body>
+</html>

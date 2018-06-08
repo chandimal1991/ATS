@@ -1,0 +1,21 @@
+@charset "ISO-8859-1";
+#logrow{
+	margin-left: 455px;	
+}
+
+#view{
+	margin-left: 47px;	
+}
+
+#admin_header{
+	margin-left: 475px;	
+}
+
+#title{
+  margin-top: 20px;
+  margin-left: 450px;
+}
+#dashboard{
+  margin-top: 20px;
+  margin-left: 50px;
+}

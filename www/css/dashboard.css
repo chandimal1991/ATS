@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+
+#view_order_btn{
+  margin-left: 15px;
+  padding: 20px 30px;
+}
+
+#view_symbol_btn{
+  margin-left: 15px;
+  padding: 20px 42px;
+}
+
+#add_symbol_btn{
+  margin-left: 15px;
+  padding: 20px 44px;
+}
+
+#view_user_btn{
+  margin-left: 15px;
+  padding: 20px 50px;
+}
+
+#dashboard_h3{
+  margin-left: 320px;
+  padding: 20px 52px;
+}

@@ -1,0 +1,5 @@
+Repo Class
+
+<T>T get(class(T),String ID)
+
+User user = get(User.class,nic)

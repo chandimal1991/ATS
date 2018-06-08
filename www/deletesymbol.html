@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Symbol List</title>
+<!-- Latest compiled and CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/watcher.css">
+<link rel="stylesheet" href="css/viewsymbol.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+</head>
+<body>
+
+<div id="result"></div>
+
+<div class="container">
+    <div class="container-fluid" style="height:100px;" id="social_header">
+			<!-- START OF SOCIAL HEADER-->
+			<div class="container">
+				<div class="col-md-12">
+					<h3 id="title">Symbols<h3>
+				</div>
+			</div>
+			<!-- END OF SOCIAL HEADER-->
+	</div>
+	
+	<div class="row">
+	    <div class="well well-lg" id="divTable">
+		    <table class="table table-bordered" id="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+						<th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+             </table>
+		    
+		</div>
+	</div>
+
+</div>
+
+<script>
+$(document).ready(function() {
+	
+    setTimeout(function(){$.ajax({
+        method: "GET",
+		data: {email:""},
+        url: "http://localhost:8000/api/com.ust.main.Main/displaySymbol?a",
+        success: function(data1) {
+		   var data = $.parseJSON(data1).myArrayList;
+		   $("#table").innerHTML = "";
+			if(data){
+                var len = data.length;
+                var txt = "";
+				var symbol = "";
+                if(len > 0){
+                    for(var i=0;i<len;i++){
+					    symbol = data[i] .map.name;
+                        txt += "<tr><td>"+data[i].map.id+"</td><td>"+data[i].map.name+"</td><td>"+data[i].map.description+"</td><td><a href='editsymbol.html?symbol="+symbol+"' class='btn btn-warning' id='edit_btn'>Edit</a></td><td><a href='editsymbol.html?symbol="+symbol+"' class='btn btn-danger' id='delete_btn'>Delete</a></td></tr>";
+                    }
+                    if(txt != ""){
+                        $("#table").append(txt);
+                    }
+                }
+            }
+        }
+			
+			
+			
+       })
+    })},1000);
+ 
+</script>
+
+<script>
+$(document).ready(function() {
+
+    // collect the symbol parameter
+	var url_string = window.location.href;
+    var url = new URL(url_string);
+    var symbol = url.searchParams.get("symbol");
+	
+	$.ajax({
+        method: "POST",
+        url: "api/com.ust.stockexchange.Main/deleteSymbol?",
+        data: {name:symbol},
+        success: function(data) {
+		    
+			if(data === "success") {
+			    location.href = "http://localhost:8000/viewsymbol.html";
+				alert("Symbol Deleted");
+			}
+			else{
+			    $("form").trigger("reset");
+				location.href = "http://localhost:8000/viewsymbol.html";
+				alert("Fail to Delete a Symbol");
+			}
+			
+       }
+    })
+
+});
+</script>
+
+
+
+
+
+
+</body>
+</html>

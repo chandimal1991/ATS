@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Order Place</title>
+<!-- Latest compiled and CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/order.css">
+<link rel="stylesheet" href="css/common.css">
+
+</head>
+
+<body>
+<div id="result"></div>
+
+<div class="container">
+<!--Start of container -->
+
+    <div class="container-fluid" style="height:100px;" id="social_header">
+			<!-- START OF SOCIAL HEADER-->
+			<div class="container">
+				<div class="col-md-10">
+					<h3 id="title">Add Symbol<h3>
+				</div>
+				<div class="col-md-2">
+					<a href='dashboard.html' class='btn btn-default' id="dashboard">DashBoard</a>
+				</div>
+			</div>
+			<!-- END OF SOCIAL HEADER-->
+	</div>
+
+<div class="row" id="logrow">
+        <div class="col-md-4">
+             <div class="well">
+                  <h4 id="symbol_name"></h4>
+                  <hr>
+				<form id="order_place"> 
+					<input type="text" name="id" id="id" placeholder="Symbol ID" class="form-control"/>
+					<br>
+					<input type="text" name="name" id="name" placeholder="Name" class="form-control"/>
+					<br>
+					<input type="text" name="description" id="description" placeholder="Description" class="form-control"/>
+					<br>
+					<input type="button" name="submit" id="submit" value="Submit" class="btn btn-success"/>
+					<input type="reset" value="Reset" class="btn btn-default"/>
+					<br>
+				</form>
+             </div>
+         </div>
+    </div>
+    <div class="well well-lg" id="footer"> 
+	<p id="footerp"> Copyright (c) 2018 @USTOCKTRADE </p>
+    </div>
+<!-- End of container -->
+</div>
+
+<script>
+$(document).ready(function() {
+
+  $("#submit").click(function() {
+    
+	var id = $('#id').val();
+	var name = $('#name').val();
+	var description = $('#description').val();
+	
+		$.ajax({
+        method: "POST",
+        url: "api/com.ust.main.AdminService/addSymbol?",
+        data: {id:id,name:name,description:description},
+        success: function(data) {
+		    
+			if(data === "success") {
+			    location.href = "http://localhost:8000/dashboard.html";
+				alert("Symbol has added");
+			}
+			else if(data == "fail"){
+			    $("form").trigger("reset");
+				location.href = "http://localhost:8000/addsymbol.html";
+				alert("Some fields are empty");
+			}
+			else if(data == "fail add symbol"){
+				location.href = "http://localhost:8000/dashboard.html";
+				alert("Error has occured");
+			}
+			
+       }
+    })
+
+	
+    
+  })
+})
+</script>
